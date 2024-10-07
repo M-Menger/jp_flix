@@ -1,8 +1,11 @@
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.shortcuts import render
+from .api.serializers import FilmSerializer
 from rest_framework import status
 from .models import Films
-from .api.serializers import FilmSerializer
+
 
 class FilmAPIView(APIView):
 
@@ -34,4 +37,18 @@ class FilmAPIView(APIView):
         film = Films.objects.get(pk=pk)
         film.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    @api_view(['GET'])
+    def home(request):
+        if request.method == 'GET':
+            # Busca por categoria (se for passada na query)
+            category = request.GET.get('category', None)  # Pega o parâmetro 'category' da URL
+            if category:
+                films = Films.objects.filter(category__icontains=category)  # Filtra por categoria, ignorando case
+            else:
+                films = Films.objects.all()
+
+            serializer = FilmSerializer(films, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
     

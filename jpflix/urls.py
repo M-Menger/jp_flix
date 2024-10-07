@@ -13,4 +13,5 @@ urlpatterns = [
     path('', include(route.urls)),
     path('films/', views.FilmAPIView.as_view(), name='films-list-create'),
     path('films/<int:pk>/', views.FilmAPIView.as_view(), name='films-detail-update-delete'),
+    path('select/', views.FilmAPIView.home, name='film-list')
 ]
