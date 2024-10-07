@@ -41,10 +41,9 @@ class FilmAPIView(APIView):
     @api_view(['GET'])
     def home(request):
         if request.method == 'GET':
-            # Busca por categoria (se for passada na query)
-            category = request.GET.get('category', None)  # Pega o parâmetro 'category' da URL
+            category = request.GET.get('category', None)
             if category:
-                films = Films.objects.filter(category__icontains=category)  # Filtra por categoria, ignorando case
+                films = Films.objects.filter(category__icontains=category)
             else:
                 films = Films.objects.all()
 
